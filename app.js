@@ -1,7 +1,9 @@
 const express = require("express");
+const mongodbConnection = require("./configs/mongodb-connection"); //몽고 DB 사용 임포트
 const handlebars = require("express-handlebars");
+const POSRT = 8080;
+
 const app = express();
-const port = 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,6 +37,10 @@ app.get("/detail/:id", async (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log("🎃express api server");
+let collection;
+app.listen(POSRT, async () => {
+    console.log("서버 실행합니다....🌭🍟🌭🍟");
+    const mongidbClient = await mongodbConnection();
+    collection = mongidbClient.db().collection("post"); //post라는 컬렉션 선택
+    console.log("몽고디비 연결.....🍿🍔🍿🍔");
 });
