@@ -1,10 +1,12 @@
 const express = require("express");
 const mongodbConnection = require("./configs/mongodb-connection"); //몽고 DB 사용 임포트
+const postService = require("./services/post-service");
 const handlebars = require("express-handlebars");
 const POSRT = 8080;
 
 const app = express();
 
+//req.body와 POST 요청을 해석하기 위한 설정
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -26,8 +28,20 @@ app.get("/", (req, res) => {
     res.render("home", { title: "테스트 게시판", messages: "만나서 반갑~" });
 });
 
+//------------ 쓰기 페이지 이동 -------------
 app.get("/write", (req, res) => {
     res.render("write", { title: "테스트 게시판" });
+});
+
+app.post("/write", async (req, res) => {
+    const post = req.body;
+    const result = await postService.writePost(collection, post);
+
+    console.log("write 전송 데이터", post);
+    console.log("write 전송 결과", result);
+
+    //생성된 도큐먼트의 _id를 이용해서 상세페이지 이동
+    res.redirect(`/detail/${result.insertedId}`);
 });
 
 app.get("/detail/:id", async (req, res) => {

@@ -2,11 +2,11 @@
 <h1>[{{title}}] 글 {{#if (eq mode "create")}}작성{{else}}수정{{/if}}</h1>
 <div>
   <!-- ❷ mode에 따라 폼이 반영되는 URL 변경 -->
-  <form name="boardForm" method="post" {{#if (eq mode "create" )}}action="/write" {{else}}action="/modify" {{/if}}>
+  <form name="boardForm" method="post" action="/write">
     <!-- ❸ 수정 모드인 때는 id값을 폼통해 전송  -->
-    {{#if (eq mode "modify")}}
+    {{!-- {{#if (eq mode "modify")}}
     <input type="hidden" name="id" value="{{post._id}}" />
-    {{/if}}
+    {{/if}} --}}
 
     <!-- ❹ 수정 모드인 경우 제목을 넣어줍니다.  -->
     <div>
